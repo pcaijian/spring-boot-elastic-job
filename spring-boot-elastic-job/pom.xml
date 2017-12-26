@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.elastic</groupId>
+    <artifactId>spring-boot-elastic-job</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>spring-boot-elastic-job</name>
+    <description>Spring Boot Elastic Job Demo</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.4.2.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <properties>
+    	<start-class>com.elastic.SpringBootElasticJobApplication</start-class>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <elastic.job.version>2.0.3</elastic.job.version>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+   		<!-- spring boot支持JDBC数据库 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>com.dangdang</groupId>
+            <artifactId>elastic-job-lite-core</artifactId>
+            <version>${elastic.job.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dangdang</groupId>
+            <artifactId>elastic-job-lite-spring</artifactId>
+            <version>${elastic.job.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+        
+        <!-- 公共 -->
+		<dependency>
+			<groupId>com.elastic.common</groupId>
+			<artifactId>elastic-job-common</artifactId> 
+			<version>1.0.5</version>
+		</dependency>
+		 
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            
+            <!-- docker 打包 -->
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<configuration>
+					<!-- 指定了镜像的名字 -->
+					<imageName>${project.name}:${project.version}</imageName>
+					<imageTags>
+						<imageTag>1.0.0</imageTag>
+					</imageTags>
+					<!-- 指定Dockerfile的位置为项目的根目录下 -->
+					<dockerDirectory>${project.basedir}</dockerDirectory>
+					<skipDockerBuild>false</skipDockerBuild>
+					<!-- 指那些需要和 Dockerfile 放在一起，在构建镜像时使用的文件，一般应用 jar 包需要纳入。本例，只需一个 jar 文件 -->
+					<resources>
+						<resource>
+							<!-- 项目构建输出目录，默认为target -->
+							<directory>${project.build.directory}</directory>
+							<!-- 打包出来的jar名称 -->
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+
+				<!--直接在package的时候执行docker build -->
+				<!--<executions> -->
+				<!--<execution> -->
+				<!--<phase>package</phase> -->
+				<!--<goals> -->
+				<!--<goal>build</goal> -->
+				<!--</goals> -->
+				<!--</execution> -->
+				<!--</executions> -->
+			</plugin>
+        </plugins>
+    </build>
+
+
+</project>

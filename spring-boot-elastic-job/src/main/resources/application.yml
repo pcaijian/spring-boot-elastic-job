@@ -1,0 +1,17 @@
+#tomcat配置
+server:
+  port: 1111
+regCenter:
+  serverList: 39.108.4.204:2181
+  namespace: elastic-job-lite-springboot
+
+jobEventConfig:
+  url: jdbc:h2:mem:job_event_storage
+  driverClassName: org.h2.Driver
+  username: sa
+  password:
+
+simpleJob:
+  cron: 0/5 * * * * ?
+  shardingTotalCount: 3
+  shardingItemParameters: 0=Beijing,1=Shanghai,2=Guangzhou
